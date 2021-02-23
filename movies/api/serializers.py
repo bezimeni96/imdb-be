@@ -10,11 +10,22 @@ from django.contrib.auth.models import User
 class UserSerializer(serializers.Serializer):
   username = serializers.CharField(max_length = 128)
   password = serializers.CharField(max_length = 128, write_only = True)
-  email = serializers.EmailField(max_length = 128, read_only = True)
+  email = serializers.EmailField(max_length = 128)
 
   class Meta:
     model = User
     fields = ['pk', 'username', 'password', 'email']
+
+  def validate(self, attrs):
+    if User.objects.filter(username=attrs['username']).exists():
+      raise serializers.ValidationError({'username':('Username is not available')})
+    
+    if User.objects.filter(email=attrs['email']).exists():
+      raise serializers.ValidationError({'email':('Email is  alrady in use')})
+    return super().validate(attrs)
+
+  def create(self, validated_data):
+    return User.objects.create_user(**validated_data)
 
 
 
