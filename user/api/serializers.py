@@ -17,11 +17,17 @@ class UserSerializer(serializers.Serializer):
     fields = ['pk', 'username', 'password', 'email']
 
   def validate(self, attrs):
-    if User.objects.filter(username=attrs['username']).exists():
-      raise serializers.ValidationError({'username':('Username is not available')})
-    
-    if User.objects.filter(email=attrs['email']).exists():
-      raise serializers.ValidationError({'email':('Email is  alrady in use')})
+    userAlradyExist = User.objects.filter(username=attrs['username']).exists()
+    emailAlredyInUse = User.objects.filter(email=attrs['email']).exists()
+    if (userAlradyExist or emailAlredyInUse):
+      if (userAlradyExist and emailAlredyInUse):
+        raise serializers.ValidationError({
+                                            'username':('Username is not available'),
+                                            'email':('Email is  alrady in use')})
+      elif (userAlradyExist):
+        raise serializers.ValidationError({'username':('Username is not available')})
+      else:
+        raise serializers.ValidationError({'email':('Email is  alrady in use')})
     return super().validate(attrs)
 
   def create(self, validated_data):

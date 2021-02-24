@@ -21,4 +21,5 @@ urlpatterns = [
 
     #REST FRAMEWORK API
     path('api/', include('movies.api.urls')),
+    path('api/', include('user.api.urls')),
 ]
