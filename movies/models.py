@@ -20,7 +20,7 @@ class Movie(models.Model):
     movie_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=256, null=False, blank=False)
     description = models.TextField(null=True, blank=True)
-    cover_image = models.URLField(null=False, blank=False)
+    cover_image = models.URLField(null=False, blank=False, default="https://media.comicbook.com/files/img/default-movie.png")
     genre = models.CharField(
         max_length=16,
         choices=GenreTypesEnum.choices,

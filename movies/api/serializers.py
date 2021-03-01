@@ -10,7 +10,7 @@ class MovieSerializer(serializers.Serializer):
   pk = serializers.IntegerField(read_only=True)
   title = serializers.CharField(max_length=256, min_length=1)
   description = serializers.CharField(max_length=512, allow_blank=True)
-  cover_image = serializers.URLField(max_length=128)
+  cover_image = serializers.URLField(max_length=512)
   genre = serializers.ChoiceField(GenreTypesEnum, default=GenreTypesEnum.ACTION)
 
 
