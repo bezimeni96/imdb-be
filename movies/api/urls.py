@@ -12,4 +12,3 @@ urlpatterns = [
   path('create-movie/', views.CreateMovieView.as_view()),
   path('', include(router.urls)),
 ]
-

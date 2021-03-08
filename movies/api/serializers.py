@@ -11,12 +11,14 @@ class MovieSerializer(serializers.Serializer):
   title = serializers.CharField(max_length=256, min_length=1)
   description = serializers.CharField(max_length=512, allow_blank=True)
   cover_image = serializers.URLField(max_length=512)
+  # image = serializers.ImageField()
+  # image2 = serializers.ImageField()
+  thumbnail_photo = serializers.ImageField()
   genre = serializers.ChoiceField(GenreTypesEnum, default=GenreTypesEnum.ACTION)
-
 
   class Meta:
     model = Movie
-    fields = ['pk', 'title', 'description', 'cover_image', 'genre']
+    fields = ['pk', 'title', 'description', 'cover_image', 'genre', 'thumbnail_photo']
 
   def validate(self, attrs):
     if Movie.objects.filter(title=attrs['title']).exists():
