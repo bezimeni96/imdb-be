@@ -35,3 +35,10 @@ class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
     # permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+      queryset = super().get_queryset()
+      title = self.request.GET.get('title')
+      if title is None:
+        return queryset
+      return queryset.filter(title__contains=title)
