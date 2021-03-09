@@ -7,6 +7,7 @@ from movies.api.serializers import MovieSerializer
 from movies.models import Movie, GenreTypesEnum
 
 
+
 class HomeView(APIView):
   def get(self, request):
     current_user = request.user
@@ -23,6 +24,7 @@ class CreateMovieView(GenericAPIView):
 
     if serializer.is_valid():
       serializer.save()
+      
       return Response(serializer.data, status=status.HTTP_201_CREATED )
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -30,6 +32,7 @@ class CreateMovieView(GenericAPIView):
 
   def get(self, request):
     return Response({'message': GenreTypesEnum.choices})
+
 
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()

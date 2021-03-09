@@ -1,0 +1,3 @@
+*.pyc
+
+./imdb/settings_credentials.py
