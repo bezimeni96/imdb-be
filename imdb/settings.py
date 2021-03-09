@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from imdb import settings_credentials as SC
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,6 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'django_seed',
+    'celery',
+    'django_celery_results',
 
     'corsheaders',
 
@@ -138,3 +141,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_HOST_USER = SC.EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = SC.EMAIL_HOST_PASSWORD
+EMAIL_PORT = '2525'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+ADMINS = SC.ADMINS
+
+
+
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_RESULT_BACKEND = 'django-cache'

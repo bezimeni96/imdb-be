@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib import auth
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken
+from movies.tasks import send_mail_to_admins
 
 from movies.models import Movie, GenreTypesEnum
 
@@ -24,4 +25,6 @@ class MovieSerializer(serializers.Serializer):
     return super().validate(attrs)
 
   def create(self, validated_data):
+    message = ' '.join(['A new movie is added to the system. Title: "', validated_data['title'], '". Description: "', validated_data['description'], '".'])
+    send_mail_to_admins(message)
     return Movie.objects.create(**validated_data)
