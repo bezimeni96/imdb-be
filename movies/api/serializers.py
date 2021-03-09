@@ -5,6 +5,9 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from movies.models import Movie, GenreTypesEnum
 
+from django.core.mail import mail_admins
+
+
 
 class MovieSerializer(serializers.Serializer):
   pk = serializers.IntegerField(read_only=True)
@@ -24,4 +27,9 @@ class MovieSerializer(serializers.Serializer):
     return super().validate(attrs)
 
   def create(self, validated_data):
+    mail_admins(
+      'Created new movie',
+      ' '.join(['A new movie is added to the system. Title: "', validated_data['title'], '". Description: "', validated_data['description'], '".']),
+      fail_silently=False,
+    )
     return Movie.objects.create(**validated_data)
